@@ -1,78 +1,69 @@
+from dataclasses import dataclass
+
 with open("inputs/day2.txt", 'r') as f:
     lines = f.readlines()
-    
-ROCK = 1
-PAPER = 2
-SCISSORS = 4
-WIN = 6
-LOSS = 0
-DRAW = 3
 
+@dataclass
+class Move:   
+    ROCK = 1
+    PAPER = 2
+    SCISSORS = 3
 
-def getRoundScore(opponentMove, myMove):
-    
-    if myMove in [WIN, LOSS, DRAW]:
-        return myMove
-    
-    if (opponentMove == ROCK and myMove == SCISSORS) \
-        or (opponentMove == PAPER and myMove == ROCK) \
-            or (opponentMove == SCISSORS and myMove == PAPER):
-             return LOSS
-    if (opponentMove == ROCK and myMove == PAPER) \
-        or (opponentMove == PAPER and myMove == SCISSORS) \
-            or (opponentMove == SCISSORS and myMove == ROCK):
-             return WIN
-    return DRAW
+@dataclass
+class Result:
+    LOSS = 0
+    DRAW = 3
+    WIN = 6
 
-def moveTranslator(moveInChar):    
-    moveMap = {'A': ROCK, 'B': PAPER, 'C': SCISSORS, 'X': ROCK, 'Y': PAPER, 'Z': SCISSORS}
+def moveTranslator(moveInChar: str) -> Move:    
+    moveMap = {'A': Move.ROCK, 'B': Move.PAPER, 'C': Move.SCISSORS, 'X': Move.ROCK, 'Y': Move.PAPER, 'Z': Move.SCISSORS}
     
     return moveMap[moveInChar]
-    
-def movePredictor(opponentMove, myResultInChar):
-    resultMap = {'X': LOSS, 'Y': DRAW, 'Z': WIN}
+
+def movePredictor(opponentMove: Move, myResultInChar: str) -> Move:
+    resultMap = {'X': Result.LOSS, 'Y': Result.DRAW, 'Z': Result.WIN}
     myResult = resultMap[myResultInChar]
     
-    if (opponentMove == ROCK and myResult == LOSS) \
-        or (opponentMove == PAPER and myResult == WIN) \
-            or (opponentMove == SCISSORS and myResult == DRAW):
-             return SCISSORS
-    if (opponentMove == ROCK and myResult == WIN) \
-        or (opponentMove == PAPER and myResult == DRAW) \
-            or (opponentMove == SCISSORS and myResult == LOSS):
-             return PAPER
-    return ROCK
-    
-    
+    if (opponentMove == Move.ROCK and myResult == Result.LOSS) \
+        or (opponentMove == Move.PAPER and myResult == Result.WIN) \
+            or (opponentMove == Move.SCISSORS and myResult == Result.DRAW):
+             return Move.SCISSORS
+    if (opponentMove == Move.ROCK and myResult == Result.WIN) \
+        or (opponentMove == Move.PAPER and myResult == Result.DRAW) \
+            or (opponentMove == Move.SCISSORS and myResult == Result.LOSS):
+             return Move.PAPER
+    return Move.ROCK
 
+def getRoundScore(opponentMove: Move, myMove: Move) -> Result:    
+    if (opponentMove == Move.ROCK and myMove == Move.SCISSORS) \
+        or (opponentMove == Move.PAPER and myMove == Move.ROCK) \
+            or (opponentMove == Move.SCISSORS and myMove == Move.PAPER):
+             return Result.LOSS
+    if (opponentMove == Move.ROCK and myMove == Move.PAPER) \
+        or (opponentMove == Move.PAPER and myMove == Move.SCISSORS) \
+            or (opponentMove == Move.SCISSORS and myMove == Move.ROCK):
+             return Result.WIN
+    return Result.DRAW
 
-def getScore(opponentMove, myMove):
-    score = 0
-    if myMove == ROCK:
-        score += 1
-    elif myMove == PAPER:
-        score += 2
-    elif myMove == SCISSORS:
-        score += 3
-    else:
-        print(f"myMove not recognized: {myMove}")
-    
-    score += getRoundScore(opponentMove, myMove)
+def getFinalScore(opponentMove: Move, myMove: Move) -> int:
+    score = myMove + getRoundScore(opponentMove, myMove)
     return score   
-    
     
 totalScore1 = 0
 totalScore2 = 0
 
 for line in lines:
-    opponentMoveInChar, myMoveInChar = line.split()   
+    opponentMoveInChar, myStrategyInChar = line.split()   
     
     opponentMove = moveTranslator(opponentMoveInChar)
-    myMove1 = moveTranslator(myMoveInChar)
-    myMove2 = movePredictor(opponentMove, myMoveInChar)    
+    myMove1 = moveTranslator(myStrategyInChar)
+    myMove2 = movePredictor(opponentMove, myStrategyInChar)    
     
-    totalScore1 += getScore(opponentMove, myMove1)
-    totalScore2 += getScore(opponentMove, myMove2)
+    totalScore1 += getFinalScore(opponentMove, myMove1)
+    totalScore2 += getFinalScore(opponentMove, myMove2)
 
-print(f"My final score with the first strategy is {totalScore1}")
-print(f"My final score with the second strategy is {totalScore2}")
+print(f"We are playing a Rock-Paper-Scissors tournament with {len(lines)} rounds")
+print("---------------------------------------------------------------------------")
+print(f"My final score with the first strategy would be: {totalScore1}")
+print(f"My final score with the second strategy would be: {totalScore2}")
+print("---------------------------------------------------------------------------")
