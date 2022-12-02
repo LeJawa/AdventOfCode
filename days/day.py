@@ -33,9 +33,8 @@ def getStringFromListOfWords(listOfWords) -> str:
     return s[:-1]
 
 class Day:
-    def __init__(self, number, solution_function) -> None:
+    def __init__(self, number) -> None:
         self.number = number
-        self.solution_function = solution_function
         self.description = []
         self.result = ""
         

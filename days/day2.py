@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-with open("inputs/day2.txt", 'r') as f:
-    lines = f.readlines()
+from day import Day
+
+DAY_NUMBER = 2
 
 @dataclass
 class Move:   
@@ -47,23 +48,45 @@ def getRoundScore(opponentMove: Move, myMove: Move) -> Result:
 
 def getFinalScore(opponentMove: Move, myMove: Move) -> int:
     score = myMove + getRoundScore(opponentMove, myMove)
-    return score   
-    
-totalScore1 = 0
-totalScore2 = 0
+    return score  
 
-for line in lines:
-    opponentMoveInChar, myStrategyInChar = line.split()   
+def get_description_and_result() -> tuple[str, str]:
+    with open("inputs/day2.txt", 'r') as f:
+        lines = f.readlines()
     
-    opponentMove = moveTranslator(opponentMoveInChar)
-    myMove1 = moveTranslator(myStrategyInChar)
-    myMove2 = movePredictor(opponentMove, myStrategyInChar)    
-    
-    totalScore1 += getFinalScore(opponentMove, myMove1)
-    totalScore2 += getFinalScore(opponentMove, myMove2)
+    totalScore1 = 0
+    totalScore2 = 0
 
-print(f"We are playing a Rock-Paper-Scissors tournament with {len(lines)} rounds")
-print("---------------------------------------------------------------------------")
-print(f"My final score with the first strategy would be: {totalScore1}")
-print(f"My final score with the second strategy would be: {totalScore2}")
-print("---------------------------------------------------------------------------")
+    for line in lines:
+        opponentMoveInChar, myStrategyInChar = line.split()   
+    
+        opponentMove = moveTranslator(opponentMoveInChar)
+        myMove1 = moveTranslator(myStrategyInChar)
+        myMove2 = movePredictor(opponentMove, myStrategyInChar)    
+    
+        totalScore1 += getFinalScore(opponentMove, myMove1)
+        totalScore2 += getFinalScore(opponentMove, myMove2)
+
+    description = f"We are playing a Rock-Paper-Scissors tournament with {len(lines)} rounds"
+    result = f"My final score with the first strategy would be: {totalScore1}\nMy final score with the second strategy would be: {totalScore2}"
+    
+    return description, result
+
+def main() -> None:
+    description, result = get_description_and_result()
+    print(description)
+    print("---------------------------------------------------------------------------")
+    print(result)
+    print("---------------------------------------------------------------------------")
+
+def getDay() -> Day:
+    description, result = get_description_and_result()
+    
+    day = Day(DAY_NUMBER)
+    day.set_description(description)
+    day.set_result(result)
+    
+    return day
+
+if __name__ == "__main__":
+    main()
