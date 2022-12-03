@@ -1,14 +1,9 @@
-import argparse
-import sys
-import os
-sys.path.append("general/")
-
-PATH = os.path.dirname(__file__)
-
 from dataclasses import dataclass
 
-from day import Day
+from argument_parser import get_config
+import os
 
+from day import Day
 DAY = 2
 
 @dataclass
@@ -57,14 +52,8 @@ def getFinalScore(opponentMove: Move, myMove: Move) -> int:
     score = myMove + getRoundScore(opponentMove, myMove)
     return score
 
-def get_input_lines() -> list[str]:
-    with open(f"{PATH}/../input/day{DAY}.txt", 'r') as f:
-        lines = f.readlines()
-    
-    return lines
-
-def get_description_and_result() -> tuple[str, str]:
-    lines = get_input_lines()
+def run_day(day: Day) -> Day:
+    lines = day.input
     
     totalScore1 = 0
     totalScore2 = 0
@@ -79,31 +68,24 @@ def get_description_and_result() -> tuple[str, str]:
         totalScore1 += getFinalScore(opponentMove, myMove1)
         totalScore2 += getFinalScore(opponentMove, myMove2)
 
-    description = f"We are playing a Rock-Paper-Scissors tournament with {len(lines)} rounds"
-    result = f"My final score with the first strategy would be: {totalScore1}\nMy final score with the second strategy would be: {totalScore2}"
-    
-    return description, result
-
-def get_day() -> Day:
-    description, result = get_description_and_result()
-    
-    day = Day(DAY)
-    day.set_description(description)
-    day.set_result(result)
-    
+    day.set_description(f"We are playing a Rock-Paper-Scissors tournament with {len(lines)} rounds")
+    day.set_result(f"My final score with the first strategy would be: {totalScore1}\nMy final score with the second strategy would be: {totalScore2}")
+            
     return day
 
-parser = argparse.ArgumentParser(description="Day 1 script",
-                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-parser.add_argument("-n", "--no-output", action="store_true", help="Don't show output")
-args = parser.parse_args()
-config = vars(args)
-
-PRINT_OUTPUT = not config['no_output']
 
 if __name__ == "__main__":
-    day = get_day()
+    
+    PATH = os.path.dirname(__file__)
+    
+    config = get_config()
+
+    PRINT_OUTPUT = not config['no_output']
+        
+    day = Day(DAY)
+    day.set_input(f"{PATH}/../input/")
+    day = run_day(day)
+    day.append_to_output(PATH)
+    
     if PRINT_OUTPUT:
         print(day)
-    
-    day.append_to_output(PATH)

@@ -1,6 +1,10 @@
 import re
 import json
-from os.path import exists
+from os.path import exists, dirname, join
+
+import inspect
+import sys
+    
 
 PRINT_LENGTH = 60
 
@@ -35,10 +39,17 @@ def getStringFromListOfWords(listOfWords) -> str:
     return s[:-1]
 
 class Day:
-    def __init__(self, number) -> None:
+    def __init__(self, number: int|str) -> None:
         self.number = int(number)
         self.description = []
         self.result = ""
+    
+    def set_input(self, path: str) -> None:
+        with open(f"{path}/day{self.number}.txt", 'r') as f:
+            self.input = f.readlines()
+    
+    def calculate_output(self) -> None:
+        pass # TODO
         
     def set_description(self, description: str|list) -> None:
         if type(description) == list:
