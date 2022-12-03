@@ -1,29 +1,21 @@
 import os
 import re
 import sys
-sys.path.append("days/")
+sys.path.append("general/")
 
-def createImports() -> None:
-    days = re.findall(r'(day\d+)\.py', str(os.listdir("days")))
-    
-    with open("import_days.py", 'w') as f:
-        f.write("# * This file was created automatically *\n\n")
-        
-        for day in days:
-            f.write(f"import {day}\n")
-        
-        f.write("\ndef get_days():\n    days = []\n    ")
-        
-        for day in days:
-            f.write(f"days.append({day}.get_day())\n    ")
-        
-        f.write("\n    return days\n")
-    
-createImports()
+from day import Day, create_days_from_json
 
-from import_days import get_days
+YEAR = 2022
+PATH = os.path.dirname(__file__)
 
-days = get_days()
+days_path = f"{PATH}/days/"
+
+day_files:list[str] = re.findall(r'day\d+\.py', str(os.listdir(days_path)))
+
+for day_file in day_files:
+    os.system(f"python {days_path}{day_file} -n")
+
+days = create_days_from_json(f"{PATH}/output/out.json")
 
 for day in days:
     print(day)

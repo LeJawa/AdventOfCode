@@ -1,4 +1,6 @@
 import re
+import json
+from os.path import exists
 
 PRINT_LENGTH = 60
 
@@ -34,15 +36,21 @@ def getStringFromListOfWords(listOfWords) -> str:
 
 class Day:
     def __init__(self, number) -> None:
-        self.number = number
+        self.number = int(number)
         self.description = []
         self.result = ""
         
-    def set_description(self, description: str) -> None:
-        self.description = getFormattedText(description)
+    def set_description(self, description: str|list) -> None:
+        if type(description) == list:
+            self.description = description
+        else:
+            self.description = getFormattedText(description)
         
-    def set_result(self, result: str) -> None:
-        self.result = getFormattedText(result)
+    def set_result(self, result: str|list) -> None:
+        if type(result) == list:
+            self.result = result
+        else:
+            self.result = getFormattedText(result)
     
     def __str__(self) -> str:
         s =  "|" + "*"*PRINT_LENGTH + "|\n"
@@ -60,7 +68,37 @@ class Day:
         s +=  "|" + "*"*PRINT_LENGTH + "|\n"
         
         return s
+    
+    def append_to_output(self, day_file_path: str) -> None:
+        json_file = f"{day_file_path}/../output/out.json"
+        
+        out = {}
+        if exists(json_file):
+            with open(json_file, 'r') as f:
+                out = json.load(f)
+                
+        out[f"{self.number}"] = (self.description, self.result)
+            
+        with open(json_file, 'w') as f:
+            json.dump(out, f)
 
+import json
+
+def create_days_from_json(json_file: str) -> list[Day]:
+    with open(json_file) as f:
+        days_dict = json.load(f)
+    
+    days = []
+    for day_number in days_dict:
+        description, result = days_dict[day_number]
+        
+        day = Day(day_number)
+        day.set_description(description)
+        day.set_result(result)
+        days.append(day)
+    
+    return days
+    
 
 def test_day():
     d1 = Day(2, sorted)
@@ -94,8 +132,7 @@ def test_day():
     # | This is a very looooong and complicated but definitely     |
     # | awesome result. It contains many many many words that I    |
     # | hope will cause problems to this script.                   |
-    # |************************************************************|
-    
+    # |************************************************************| 
     
 if __name__ == "__main__":
     test_day()

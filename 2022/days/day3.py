@@ -3,12 +3,14 @@ import sys
 import os
 sys.path.append("general/")
 
+PATH = os.path.dirname(__file__)
+
 from day import Day
 
-DAY_NUMBER = 3
+DAY = 3
 
 def get_input_lines() -> list[str]:
-    with open(f"{os.path.dirname(__file__)}/../inputs/day{DAY_NUMBER}.txt", 'r') as f:
+    with open(f"{PATH}/../input/day{DAY}.txt", 'r') as f:
         lines = f.readlines()
     
     return lines
@@ -69,7 +71,7 @@ def get_description_and_result() -> tuple[str, str]:
 def get_day() -> Day:
     description, result = get_description_and_result()
     
-    day = Day(DAY_NUMBER)
+    day = Day(DAY)
     day.set_description(description)
     day.set_result(result)
     
@@ -87,3 +89,5 @@ if __name__ == "__main__":
     day = get_day()
     if PRINT_OUTPUT:
         print(day)
+    
+    day.append_to_output(PATH)
