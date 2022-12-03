@@ -15,7 +15,7 @@ def createImports() -> None:
         f.write("\ndef get_days():\n    days = []\n    ")
         
         for day in days:
-            f.write(f"days.append({day}.getDay())\n    ")
+            f.write(f"days.append({day}.get_day())\n    ")
         
         f.write("\n    return days\n")
     
