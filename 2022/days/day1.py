@@ -1,10 +1,19 @@
-from day import Day
+import argparse
+import sys
+import os
+sys.path.append("general/")
 
+from day import Day
 DAY_NUMBER = 1
 
-def get_description_and_result() -> tuple[str, str]:
-    with open("inputs/day1.txt", 'r') as f:
+def get_input_lines() -> list[str]:
+    with open(f"{os.path.dirname(__file__)}/../inputs/day{DAY_NUMBER}.txt", 'r') as f:
         lines = f.readlines()
+    
+    return lines
+
+def get_description_and_result() -> tuple[str, str]:
+    lines = get_input_lines()
 
     caloriesPerElf = []
     elfCalories = 0
@@ -43,5 +52,15 @@ def get_day() -> Day:
     
     return day
 
+parser = argparse.ArgumentParser(description="Day 1 script",
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-n", "--no-output", action="store_true", help="Don't show output")
+args = parser.parse_args()
+config = vars(args)
+
+PRINT_OUTPUT = not config['no_output']
+
 if __name__ == "__main__":
-    print(get_day())
+    day = get_day()
+    if PRINT_OUTPUT:
+        print(day)

@@ -1,3 +1,8 @@
+import argparse
+import sys
+import os
+sys.path.append("general/")
+
 from dataclasses import dataclass
 
 from day import Day
@@ -48,11 +53,16 @@ def getRoundScore(opponentMove: Move, myMove: Move) -> Result:
 
 def getFinalScore(opponentMove: Move, myMove: Move) -> int:
     score = myMove + getRoundScore(opponentMove, myMove)
-    return score  
+    return score
+
+def get_input_lines() -> list[str]:
+    with open(f"{os.path.dirname(__file__)}/../inputs/day{DAY_NUMBER}.txt", 'r') as f:
+        lines = f.readlines()
+    
+    return lines
 
 def get_description_and_result() -> tuple[str, str]:
-    with open("inputs/day2.txt", 'r') as f:
-        lines = f.readlines()
+    lines = get_input_lines()
     
     totalScore1 = 0
     totalScore2 = 0
@@ -81,5 +91,15 @@ def get_day() -> Day:
     
     return day
 
+parser = argparse.ArgumentParser(description="Day 1 script",
+                                 formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument("-n", "--no-output", action="store_true", help="Don't show output")
+args = parser.parse_args()
+config = vars(args)
+
+PRINT_OUTPUT = not config['no_output']
+
 if __name__ == "__main__":
-    print(get_day())
+    day = get_day()
+    if PRINT_OUTPUT:
+        print(day)
