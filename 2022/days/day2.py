@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from argument_parser import get_config
+from argument_parser import get_config_from_individual_day
 import os
 
 from day import Day
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     
     PATH = os.path.dirname(__file__)
     
-    config = get_config()
+    config = get_config_from_individual_day()
 
     PRINT_OUTPUT = not config['no_output']
         

@@ -45,7 +45,7 @@ if __name__ == "__main__":
     
     PATH = os.path.dirname(__file__)
     
-    config = get_config()
+    config = get_config_from_individual_day()
 
     PRINT_OUTPUT = not config['no_output']
         
