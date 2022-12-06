@@ -4,7 +4,7 @@ import os
 from day import Day
 DAY = 5
 
-def is_nice(string: str) -> bool:    
+def is_nice_part_one(string: str) -> bool:    
     naughty_substring_list = ['ab', 'cd', 'pq', 'xy']
     for substring in naughty_substring_list:
         if substring in string:
@@ -22,6 +22,7 @@ def is_nice(string: str) -> bool:
         else:
             if last_letter == letter:
                 repeated_letter = True
+            last_letter = letter
         
     if number_of_vowels < 3:
         return False
@@ -30,19 +31,24 @@ def is_nice(string: str) -> bool:
         return False
     
     return True   
-    
+
+def is_nice_part_two(string: str) -> bool:
+    pass
 
 def run_day(day: Day) -> Day:
     strings = day.input
     
-    nice_strings = 0
+    nice_strings_part_one = 0
+    nice_strings_part_two = 0
     
     for string in strings:
-        if is_nice(string):
-            nice_strings += 1
+        if is_nice_part_one(string):
+            nice_strings_part_one += 1
+        if is_nice_part_two(string):
+            nice_strings_part_two += 1
     
     day.set_description(f"")
-    day.set_result(f"{nice_strings}")
+    day.set_result(f"{nice_strings_part_one}\n{nice_strings_part_two}")
             
     return day
 

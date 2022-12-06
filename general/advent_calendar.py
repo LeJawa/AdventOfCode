@@ -20,7 +20,11 @@ class AdventCalendar:
             os.system(f"python {days_path}{day_file} -n")
         
     def import_days(self):
-        self.days = create_days_from_json(f"{self.PATH}/output/out.json")
+        try:
+            self.days = create_days_from_json(f"{self.PATH}/output/out.json")
+        except Exception:
+            self.run_days()
+            self.days = create_days_from_json(f"{self.PATH}/output/out.json")
     
     def print_days(self):
         for day in self.days:

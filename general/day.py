@@ -1,9 +1,6 @@
 import re
 import json
-from os.path import exists, dirname, join
-
-import inspect
-import sys
+from os.path import exists
     
 
 PRINT_LENGTH = 60
@@ -11,9 +8,10 @@ PRINT_LENGTH = 60
 def getFormattedText(text):
     finalText = []
     
-    if len(text) <= PRINT_LENGTH - 2:
-        finalText.append(text)
-        return finalText
+    # Not actually needed? ( let's see... )
+    # if len(text) <= PRINT_LENGTH - 2 and not '\n' in text:
+    #     finalText.append(text)
+    #     return finalText
     
     text = re.findall(r'\S+|\n', text)
     
