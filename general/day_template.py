@@ -3,11 +3,13 @@ import os
 
 from day import Day
 DAY = 0
+PRINT_OUTPUT_MANUAL_OVERRIDE = False
 
 def run_day(day: Day) -> Day:
     lines = day.input
+    # lines = day.sample
     
-     # Calculate output
+    # Calculate output
     
     day.set_description(f"")
     day.set_result(f"")
@@ -28,5 +30,5 @@ if __name__ == "__main__":
     day = run_day(day)
     day.append_to_output(PATH)
     
-    if PRINT_OUTPUT:
+    if PRINT_OUTPUT and PRINT_OUTPUT_MANUAL_OVERRIDE:
         print(day)

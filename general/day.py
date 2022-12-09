@@ -45,6 +45,13 @@ class Day:
     def set_input(self, path: str) -> None:
         with open(f"{path}/day{self.number}.txt", 'r') as f:
             self.input = f.readlines()
+        
+        try:
+            with open(f"{path}/day{self.number}_sample.txt", 'r') as f:
+                self.sample = f.readlines()
+        except FileNotFoundError:
+            self.sample = None
+            
     
     def calculate_output(self) -> None:
         pass # TODO
