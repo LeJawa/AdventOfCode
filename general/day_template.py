@@ -3,7 +3,7 @@ import os
 
 from day import Day
 DAY = 0
-PRINT_OUTPUT_MANUAL_OVERRIDE = False
+PRINT_OUTPUT_MANUAL_OVERRIDE = True
 
 def run_day(day: Day) -> Day:
     lines = day.input
