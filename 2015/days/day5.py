@@ -33,7 +33,23 @@ def is_nice_part_one(string: str) -> bool:
     return True   
 
 def is_nice_part_two(string: str) -> bool:
-    pass
+    
+    repeatead_letter = False
+    repeatead_pair = False  
+    
+    for i in range(len(string) - 2):
+        if string[i] == string[i+2]:
+            repeatead_letter = True
+            break
+        
+    
+    for i in range(len(string) - 3):
+        substring = string[i:i+2]
+        if substring in string[i+2:]:
+            repeatead_pair = True
+            break         
+        
+    return repeatead_pair and repeatead_letter
 
 def run_day(day: Day) -> Day:
     strings = day.input
@@ -47,8 +63,8 @@ def run_day(day: Day) -> Day:
         if is_nice_part_two(string):
             nice_strings_part_two += 1
     
-    day.set_description(f"")
-    day.set_result(f"{nice_strings_part_one}\n{nice_strings_part_two}")
+    day.set_description(f"Santa has two ways of figuring out which strings are nice and which are naughty.")
+    day.set_result(f"According to the first way, there are {nice_strings_part_one} nice strings.\nAccording to the second way, there are {nice_strings_part_two} nice strings.")
             
     return day
 
