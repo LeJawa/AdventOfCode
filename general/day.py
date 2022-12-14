@@ -1,12 +1,17 @@
 import re
 import json
 from os.path import exists
-    
+
+LITERAL_TEXT_MARKER = "!@#$"
 
 PRINT_LENGTH = 60
 
-def getFormattedText(text):
-    finalText = []
+def getFormattedText(text: str) -> list[str]:
+    if LITERAL_TEXT_MARKER in text:
+        text = text.replace(LITERAL_TEXT_MARKER, '')
+        return text.split(sep='\n')
+    
+    finalText: list[str] = []
     
     # Not actually needed? ( let's see... )
     # if len(text) <= PRINT_LENGTH - 2 and not '\n' in text:
@@ -117,8 +122,8 @@ def create_days_from_json(json_file: str) -> list[Day]:
     
 
 def test_day():
-    d1 = Day(2, sorted)
-    d2 = Day(23, sorted)
+    d1 = Day(2)
+    d2 = Day(23)
     d1.set_description("This is a short description")
     d1.set_result("This is a short result")
     d2.set_description("This is a very looooong and complicated but definitely awesome description.\n\n It contains many many many words that I hope will cause problems to this script.\n")
